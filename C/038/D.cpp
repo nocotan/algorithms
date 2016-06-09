@@ -64,5 +64,5 @@ int main() {
   rep(i,N) cin >> v[i][0] >> v[i][1];
 
   v = m_sort(v);
-  ret(i, N) cout << v[i][0] << endl;
+  ret(i, N) P(v[i][0]);
 }

@@ -46,28 +46,42 @@ template<typename C, typename Pred> void sort(C& c, Pred p) { sort(ALL(c), p); }
 
 // 定数
 #pragma region CONST_VAL
-#define PI (2*acos(0.0))
-#define EPS (1e-9)
-#define MOD (int)(1e9+7)
-#define INF numeric_limits<int>::infinity()
+constexpr int PI = (2*acos(0.0));
+constexpr int EPS = (1e-9);
+constexpr int MOD = (int)(1e9+7);
+constexpr int INF = 100000000;
 #pragma endregion
 
+// 文字列分割
+vector<long long> split(const string &input, char delimiter) {
+    istringstream stream(input);
+    string field;
+    vector<long long> result;
+
+    while (getline(stream, field, delimiter))
+        result.push_back(stoll(field));
+
+    return result;
+}
 
 int main()
 {
     string s;
     cin >> s;
-    int ln = s.length();
+    const int N = s.size() - 1;
     ll ans = 0;
-    rep(i,ln) {
-        if (s.substr(0, i+1)!="")
-            ans += stol(s.substr(0,i+1));
-        REP(j,i,ln) {
-            if (s.substr(i+1, j+i)!="")
-                ans += stol(s.substr(i+1, j+i));
+    for(int i=0; i<1<<N; ++i) {
+        string sp = s;
+        int n = 0;
+        for(int j=0; j<N; ++j) {
+            if ((i&(1<<j))!=0) {
+                sp.insert(j+n+1, "+");
+                n++;
+            }
         }
+        vll v = split(sp, '+');
+        for(auto iter=v.begin(); iter!=v.end(); iter++) ans += *iter;
     }
-
     P(ans);
     return 0;
 }

@@ -57,29 +57,11 @@ int main()
 {
     int K, T;
     cin >> K >> T;
-    int tmp[10000] = {0};
-    rep(i,T) {
-        int ai;
-        cin >> ai;
-        tmp[i] = ai;
-    }
-
-    vi b;
-    sort(tmp, tmp+K, greater<int>());
-    int i = 0;
-    int cnt = K;
-    while(cnt) {
-        if(tmp[i]!=0) {
-            b.push_back(i);
-            tmp[i]--;
-        }
-        if(i!=T-1) i++;
-        else i = 0;
-        cnt--;
-    }
-    int ans = 0;
-    REP(j,1,b.size()) if(b[j]==b[j-1]) ans++;
-    P(ans);
+    int a[111];
+    rep(i,T) cin >> a[i];
+    int mx = *max_element(a, a+T);
+    if(2*mx>K) P(K-(K-mx)*2-1);
+    else P(0);
     return 0;
 }
 

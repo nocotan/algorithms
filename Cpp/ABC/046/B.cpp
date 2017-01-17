@@ -53,24 +53,11 @@ constexpr int MOD = (int)(1e9+7);
 constexpr int INF = 100000000;
 #pragma endregion
 
-
-ll cm(int n, int k) {
-    ll r = 1;
-    REPI(i,1,k) {
-        r *= n--;
-        r /= i;
-    }
-    return r;
-}
-
 int main()
 {
-    int n, k;
-    cin >> n >> k;
-
-    ll p_sum = pow(n,k);
-
-    P(p_sum - cm(k,n-1));
+    int N, K;
+    cin >> N >> K;
+    P(K*(int)pow(K-1,N-1));
 
     return 0;
 }

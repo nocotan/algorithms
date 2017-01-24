@@ -53,12 +53,21 @@ constexpr int MOD = (int)(1e9+7);
 constexpr int INF = 100000000;
 #pragma endregion
 
+
 int main()
 {
-    int N, K;
-    cin >> N >> K;
-    P(K*(int)pow(K-1,N-1));
-
+    int ans = 0;
+    rep(i, 12) {
+        string s;
+        cin >> s;
+        rep(j, s.size()) {
+            if(s[j]=='r') {
+                ans++;
+                break;
+            }
+        }
+    }
+    P(ans);
     return 0;
 }
 

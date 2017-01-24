@@ -53,12 +53,13 @@ constexpr int MOD = (int)(1e9+7);
 constexpr int INF = 100000000;
 #pragma endregion
 
+
 int main()
 {
-    int N, K;
-    cin >> N >> K;
-    P(K*(int)pow(K-1,N-1));
-
+    int a, b, c, d;
+    string s, t, u, v;
+    cin >> a >> b >> c >> d;
+    P(max(a*b, c*d));
     return 0;
 }
 

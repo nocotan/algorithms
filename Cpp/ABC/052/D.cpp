@@ -53,11 +53,23 @@ constexpr int MOD = (int)(1e9+7);
 constexpr int INF = 100000000;
 #pragma endregion
 
+
 int main()
 {
-    int N, K;
-    cin >> N >> K;
-    P(K*(int)pow(K-1,N-1));
+
+    ll N;
+    ll A, B;
+    cin >> N;
+    cin >> A >> B;
+    vi X(N);
+    rep(i, N) {
+        cin >> X[i];
+    }
+    ll ans = 0;
+    REP(i,1,N) {
+        ans += min((X[i]-X[i-1])*A, B);
+    }
+    P(ans);
 
     return 0;
 }

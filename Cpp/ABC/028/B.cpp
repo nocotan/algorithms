@@ -53,12 +53,16 @@ constexpr int MOD = (int)(1e9+7);
 constexpr int INF = 100000000;
 #pragma endregion
 
+
 int main()
 {
-    int N, K;
-    cin >> N >> K;
-    P(K*(int)pow(K-1,N-1));
-
+    string s;
+    cin >> s;
+    int cnt[100000] = {0};
+    rep(i, s.size()) {
+        cnt[s[i]]++;
+    }
+    cout<<cnt['A']<<" "<<cnt['B']<<" "<<cnt['C']<<" "<<cnt['D']<<" "<<cnt['E']<<" "<<cnt['F']<<endl;
     return 0;
 }
 

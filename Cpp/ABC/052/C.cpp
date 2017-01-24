@@ -53,12 +53,39 @@ constexpr int MOD = (int)(1e9+7);
 constexpr int INF = 100000000;
 #pragma endregion
 
-int main()
-{
-    int N, K;
-    cin >> N >> K;
-    P(K*(int)pow(K-1,N-1));
+int N;
 
-    return 0;
+vector<int> sieve_of_eratosthenes(int n) {
+  vector<int> primes(n);
+  for (int i = 2; i < n; ++i)
+    primes[i] = i;
+  for (int i = 2; i*i < n; ++i)
+    if (primes[i])
+      for (int j = i*i; j < n; j+=i)
+        primes[j] = 0;
+  return primes;
 }
 
+int main()
+{
+    cin >> N;
+    vi arr = sieve_of_eratosthenes(1000);
+    vi primes;
+    rep(i, arr.size()) {
+        if(arr[i]!=0) primes.push_back(i);
+    }
+    ll cnt = 0;
+    ll ans = 1;
+    for(int i = 0; i < primes.size(); i++){
+        int cur = primes[i];
+        int total = 0;
+        while(cur <= N){
+            total += (N/cur);
+            cur = cur*primes[i];
+        }
+        if(total!=0) ans *= (total+1);
+        ans %= MOD;
+    }
+    P(ans%MOD);
+    return 0;
+}

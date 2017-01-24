@@ -53,12 +53,31 @@ constexpr int MOD = (int)(1e9+7);
 constexpr int INF = 100000000;
 #pragma endregion
 
+
 int main()
 {
-    int N, K;
-    cin >> N >> K;
-    P(K*(int)pow(K-1,N-1));
+    int n;
+    cin >> n;
+    vi v(n);
+    rep(i, n) {
+        cin >> v[i];
+    }
 
+    int sum = accumulate(ALL(v),0);
+    if(sum%n!=0) {
+        P(-1);
+        return 0;
+    }
+
+    int num = sum/n;
+
+    int ans = 0;
+    rep(i, n-1) {
+        if(v[i]==num) continue;
+        v[i+1] += v[i] - num;
+        ans++;
+    }
+    P(ans);
     return 0;
 }
 

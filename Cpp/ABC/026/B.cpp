@@ -53,29 +53,20 @@ constexpr int MOD = (int)(1e9+7);
 constexpr int INF = 100000000;
 #pragma endregion
 
-string solve_y(int n) {
-    if (n>0) return "U";
-    else return "D";
-}
-
-string solve_x(int n) {
-    if (n>0) return "R";
-    else return "L";
-}
 
 int main()
 {
-    int sx, sy, tx, ty;
-    cin >> sx >> sy >> tx >> ty;
-
-    int dx = tx - sx;
-    int dy = ty - sy;
-
-    cout << string(dy, 'U') << string(dx, 'R');
-    cout << string(dy, 'D') << string(dx, 'L');
-    cout << "L" << string(dy+1, 'U') << string(dx+1, 'R') << "D";
-    cout << "R" << string(dy+1, 'D') << string(dx+1, 'L') << "U"<< endl;
-
+    int n; cin >> n;
+    vector<int> r(n);
+    rep(i, n) cin >> r[i];
+    sort(r.begin(),r.end());
+    double sum = 0;
+    rep(i, n){
+        if(i % 2 == 0)sum += (r[i] * r[i]);
+        else sum -= (r[i] * r[i]);
+    }
+ 
+    printf("%.9f\n", abs(sum * 3.1415926535));
     return 0;
 }
 

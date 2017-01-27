@@ -26,6 +26,7 @@ typedef pair<string, int> psi;
 typedef pair<int, string> pis;
 typedef vector<int> vi;
 typedef vector<double> vd;
+typedef vector<long double> vld;
 typedef vector<long> vl;
 typedef vector<long long> vll;
 typedef vector<string> vs;
@@ -55,14 +56,23 @@ constexpr int INF = 100000000;
 
 int main()
 {
-    double x1, y1, x2, y2, x3, y3;
-    cin >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
-    x2 -= x1;
-    x3 -= x1;
-    y2 -= y1;
-    y3 -= y1;
-    double S = abs(x2*y3-x3*y2)/2.0;
-    printf("%.1f\n", S);
+    int n, k;
+    cin >> n >> k;
+    vi v(n);
+    rep(i,n) cin >> v[i];
+
+    sort(v);
+    vi a;
+    rep(i, k) {
+        a.push_back(v[v.size()-1-i]);
+    }
+    sort(a);
+
+    double ans = 0;
+    rep(i, k) {
+        ans = (ans + a[i])/2.0;
+    }
+    printf("%6f\n", ans);
     return 0;
 }
 

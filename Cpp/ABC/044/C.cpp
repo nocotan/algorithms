@@ -83,25 +83,24 @@ void sort(C& c, Pred p) { sort(ALL(c), p); }
 #define MOD (int)(1e9+7)
 #pragma endregion
 
-double N, A;
-vi v;
+ll dp[2501][52];
 
-int rec(int i, int j) {
-    int res = 0;
-    if(rec(i+1, j)%(i+1)==A) res++;
-    if(rec(i+1, j-v[i])+v[i]%(i+1)==A) res++;
-    return res;
-}
-
-int main()
-{
-    cin >> N >> A;
-    rep(i,N) {
-        int a;
-        cin >> a;
-        v.push_back(a);
+int main() {
+    int n, a;
+    cin >> n >> a;
+    rep(I, n) {
+        int x;
+        cin >> x;
+        for(int j=2500; j>=0; --j) {
+            for(int k=51; k>0; --k) {
+                if(dp[j][k-1]) {
+                    dp[j+x][k] += dp[j][k-1];
+                }
+            }
+        }
+        dp[x][1]++;
     }
-    P(rec(0, A*N));
-    return 0;
+    ll ans = 0;
+    for(int i=1; i<=n; ++i) ans += dp[i*a][i];
+    P(ans);
 }
-

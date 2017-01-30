@@ -53,44 +53,24 @@ constexpr int MOD = (int)(1e9+7);
 constexpr int INF = 100000000;
 #pragma endregion
 
-vi a;
-int N;
-
-int solve(vi v) {
-    rep(i, v.size()/2) {
-        int lhs1, rhs1, lhs2, rhs2;
-        lhs1 = i;
-        rhs1 = v.size() - i - 1;
-        lhs2 = v.size() - i - 1;
-        rhs2 = i;
-        if(a[v[i]-1] != abs(lhs1-rhs1)) return 0;
-        if(a[v[v.size()-1-i]-1] != abs(lhs2-rhs2)) return 0;
+int main() {
+    int n;
+    int s = 1;
+    cin >> n;
+    vi a(n, 0);
+    for(int i=n-1; i>=0; i-=2) {
+        a[i] = 2;
+        if(i!=0) s = (s*2)%MOD;
     }
-    return 1;
-}
-
-int main()
-{
-    cin >> N;
-
-    rep(i, N) {
-        int x;
-        cin >> x;
-        a.push_back(x);
-    }
-
-    vi v(N);
-    iota(ALL(v), 1);
-
-    ll ans = 0;
-    do {
-        if(solve(v)) {
-            ans++;
+    if(n%2==1) a[0] = 1;
+    for (int i=0; i<n; ++i) {
+        int t;
+        cin >> t;
+        a[t]--;
+        if(a[t]<0) {
+            P(0);
+            return 0;
         }
-    } while(next_permutation(ALL(v)));
-
-    P(ans%MOD);
-
-    return 0;
+    }
+    P(s);
 }
-

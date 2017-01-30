@@ -56,19 +56,12 @@ constexpr int INF = 100000000;
 
 int main()
 {
-#define int ll
-    int n;
-    cin >> n;
-    int a=1;
-    int b=1;
-    rep(i,n) {
-        int x, y;
-        cin >> x >> y;
-        int n = max(a/x+(a%x>0), b/y+(b%y>0));
-        a = x*n;
-        b = y*n;
-    }
-    cout << a +  b << endl;
+    ll x;
+    cin >> x;
+    ll n = x / 11;
+    if(x%11==0) cout << n*2 << endl;
+    else if(x%11<=6) cout << n*2+1 << endl;
+    else cout << n*2+2 << endl;
     return 0;
 }
 

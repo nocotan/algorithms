@@ -56,19 +56,23 @@ constexpr int INF = 100000000;
 
 int main()
 {
-#define int ll
-    int n;
-    cin >> n;
-    int a=1;
-    int b=1;
-    rep(i,n) {
-        int x, y;
-        cin >> x >> y;
-        int n = max(a/x+(a%x>0), b/y+(b%y>0));
-        a = x*n;
-        b = y*n;
+    int t, n;
+    cin >> t >> n;
+    int a[n];
+    for(int i=0; i<n; ++i) cin >> a[i];
+    int m;
+    cin >> m;
+    int b[m];
+    int f = 1;
+    int p=0, q=0;
+    for(int i=0; i<m; ++i) {
+        cin >> b[i];
+        while(p<n&&a[p]<=b[i]) p++;
+        while(q<p&&a[q]+t<b[i]) q++;
+        if(p==q) f = 0;
+        q++;
     }
-    cout << a +  b << endl;
+    cout << (f?"yes":"no")<<endl;
     return 0;
 }
 

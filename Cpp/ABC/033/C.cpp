@@ -53,22 +53,36 @@ constexpr int MOD = (int)(1e9+7);
 constexpr int INF = 100000000;
 #pragma endregion
 
+// 文字列分割
+vector<string> split(const string &input, char delimiter) {
+    istringstream stream(input);
+    string field;
+    vector<string> result;
+
+    while (getline(stream, field, delimiter))
+        result.push_back(field);
+
+    return result;
+}
 
 int main()
 {
-#define int ll
-    int n;
-    cin >> n;
-    int a=1;
-    int b=1;
-    rep(i,n) {
-        int x, y;
-        cin >> x >> y;
-        int n = max(a/x+(a%x>0), b/y+(b%y>0));
-        a = x*n;
-        b = y*n;
+    string s;
+    cin >> s;
+    vs v = split(s,'+');
+    int f = 0;
+    int ans = 0;
+    for (auto u : v) {
+        for(int i=0; i<u.size(); ++i) {
+            if(u[i]=='0') {
+                f = 1;
+                break;
+            }
+        }
+        if (f==0) ans++;
+        f = 0;
     }
-    cout << a +  b << endl;
+    P(ans);
     return 0;
 }
 

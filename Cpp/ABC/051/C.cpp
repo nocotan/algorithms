@@ -68,51 +68,14 @@ int main()
     int sx, sy, tx, ty;
     cin >> sx >> sy >> tx >> ty;
 
-    int ax=sx, ay=sy;
-    string s = "";
-    int cnt = 0;
-    int f = 1;
-    while(true) {
-        if(ax==tx&&ay==ty) {
-            if (cnt==3) break;
-            cnt++;
-            f *= -1;
-        }
-        if(cnt==0||cnt==2) {
-            if(ay!=ty) {
-                int d = ty - ay;
-                if(d<0) ay--;
-                else ay++;
-                s += solve_y(d*f);
-                continue;
-            }
-            if(ax!=tx) {
-                int d = tx - ax;
-                if(d<0) ax--;
-                else ax++;
-                s += solve_x(d*f);
-                continue;
-            }
-        }
-        if(cnt==1||cnt==3) {
-            if(ay!=sy) {
-                int d = sy - ay;
-                if(d<0) ay--;
-                else ay++;
-                s += solve_y(d*f);
-                continue;
-            }
-            if(ax!=sx) {
-                int d = sx - ax;
-                if(d<0) ax--;
-                else ax++;
-                s += solve_x(d*f);
-                continue;
-            }
-        }
-    }
+    int dx = tx - sx;
+    int dy = ty - sy;
 
-    P(s);
+    cout << string(dy, 'U') << string(dx, 'R');
+    cout << string(dy, 'D') << string(dx, 'L');
+    cout << "L" << string(dy+1, 'U') << string(dx+1, 'R') << "D";
+    cout << "R" << string(dy+1, 'D') << string(dx+1, 'L') << "U"<< endl;
+
     return 0;
 }
 

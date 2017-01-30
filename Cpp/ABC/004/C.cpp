@@ -56,19 +56,18 @@ constexpr int INF = 100000000;
 
 int main()
 {
-#define int ll
-    int n;
+    ll n;
     cin >> n;
-    int a=1;
-    int b=1;
-    rep(i,n) {
-        int x, y;
-        cin >> x >> y;
-        int n = max(a/x+(a%x>0), b/y+(b%y>0));
-        a = x*n;
-        b = y*n;
+    n %= 30;
+    vi v(6);
+    iota(ALL(v), 1);
+    rep(i, n) {
+        int tmp = v[i%5];
+        v[i%5] = v[i%5+1];
+        v[i%5+1] = tmp;
     }
-    cout << a +  b << endl;
+    for(int a : v) cout << a;
+    cout << endl;
     return 0;
 }
 

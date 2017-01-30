@@ -56,19 +56,23 @@ constexpr int INF = 100000000;
 
 int main()
 {
-#define int ll
-    int n;
-    cin >> n;
-    int a=1;
-    int b=1;
-    rep(i,n) {
-        int x, y;
-        cin >> x >> y;
-        int n = max(a/x+(a%x>0), b/y+(b%y>0));
-        a = x*n;
-        b = y*n;
+    int n, k;
+    cin >> n >> k;
+    vi v(n);
+    rep(i,n) cin >> v[i];
+
+    sort(v);
+    vi a;
+    rep(i, k) {
+        a.push_back(v[v.size()-1-i]);
     }
-    cout << a +  b << endl;
+    sort(a);
+
+    double ans = 0;
+    rep(i, k) {
+        ans = (ans + a[i])/2.0;
+    }
+    printf("%6f\n", ans);
     return 0;
 }
 

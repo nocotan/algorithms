@@ -56,19 +56,28 @@ constexpr int INF = 100000000;
 
 int main()
 {
-#define int ll
     int n;
     cin >> n;
-    int a=1;
-    int b=1;
-    rep(i,n) {
-        int x, y;
-        cin >> x >> y;
-        int n = max(a/x+(a%x>0), b/y+(b%y>0));
-        a = x*n;
-        b = y*n;
+    vi v;
+    vi memo(100001, 0);
+    rep(i, n) {
+        int a;
+        cin >> a;
+        v.push_back(a);
+        memo[a]++;
     }
-    cout << a +  b << endl;
+
+    sort(v);
+    sort(memo, greater<int>());
+    v.erase(unique(ALL(v)), v.end());
+    int tmp = 0;
+    int tmp2 = 0;
+    rep(i, v.size()) {
+        if (memo[i]>=2)
+            if (memo[i]%2==0) tmp2++;
+    }
+    cout << v.size() - tmp2%2 << endl;
+
     return 0;
 }
 

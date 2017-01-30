@@ -53,22 +53,22 @@ constexpr int MOD = (int)(1e9+7);
 constexpr int INF = 100000000;
 #pragma endregion
 
-
-int main()
-{
-#define int ll
-    int n;
-    cin >> n;
-    int a=1;
-    int b=1;
-    rep(i,n) {
-        int x, y;
-        cin >> x >> y;
-        int n = max(a/x+(a%x>0), b/y+(b%y>0));
-        a = x*n;
-        b = y*n;
-    }
-    cout << a +  b << endl;
-    return 0;
+int main(){
+    int N,A,B,sum=0;
+    string s;
+    int d;
+cin>>N>>A>>B;
+for (int i = 0; i < N; ++i) {
+    cin >>s>>d;
+    if (s[0]=='E'&&d<A) sum+=A;
+    if (s[0]=='W'&&d<A) sum-=A;
+    if (s[0]=='E'&&A <= d &&d<= B) sum+=d;
+    if (s[0]=='W'&&A <= d &&d<= B) sum-=d;
+    if (s[0]=='E'&&d > B) sum+=B;
+    if (s[0]=='W'&&d > B) sum-=B;
 }
-
+if(sum>0){cout <<"East"<<" "<<sum<<endl; }
+if(sum<0){cout <<"West"<<" "<<abs(sum)<<endl; }
+if(sum==0){cout <<0<<endl; }
+return 0;
+}

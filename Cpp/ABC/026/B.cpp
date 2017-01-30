@@ -56,19 +56,17 @@ constexpr int INF = 100000000;
 
 int main()
 {
-#define int ll
-    int n;
-    cin >> n;
-    int a=1;
-    int b=1;
-    rep(i,n) {
-        int x, y;
-        cin >> x >> y;
-        int n = max(a/x+(a%x>0), b/y+(b%y>0));
-        a = x*n;
-        b = y*n;
+    int n; cin >> n;
+    vector<int> r(n);
+    rep(i, n) cin >> r[i];
+    sort(r.begin(),r.end());
+    double sum = 0;
+    rep(i, n){
+        if(i % 2 == 0)sum += (r[i] * r[i]);
+        else sum -= (r[i] * r[i]);
     }
-    cout << a +  b << endl;
+ 
+    printf("%.9f\n", abs(sum * 3.1415926535));
     return 0;
 }
 

@@ -53,68 +53,23 @@ constexpr int MOD = (int)(1e9+7);
 constexpr int INF = 100000000;
 #pragma endregion
 
-ll h, w, k;
-int v[51][51];
-int memo[51][51];
-vector< vector<int> > ans;
+#define int long long
 
-void solve(int x, int y) {
-    if(v[x][y] == INF || v[x][y] == 0 || memo[x][y] == 0) return;
-
-    vi tmp;
-    int tmp_memo[51][51] = {{0}};
-    REP(i,y,50) {
-        if(tmp.size() >= 8) break;
-        REP(j,x,50) {
-            if(v[i][j] != 0 && memo[i][j] != 0){
-                tmp.push_back(v[i][j]);
-                memo[i][j] = 1;
-                tmp_memo[i][j] = 1;
-
-            }
-            else continue;
-        }
-    }
-
-    if(tmp.size() == 8) ans.push_back(tmp);
-    else {
-        REP(i,x,50) {
-            REP(j,y,50) {
-                if(tmp_memo[i][j]==1) memo[i][j] = 0;
-            }
-        }
-    }
-}
-
-int main()
+signed main()
 {
-    rep(i, 51)
-        rep(j,51) {
-            v[i][j] = INF;
-            memo[i][j] = 0;
-        }
-
-    cin >> h >> w >> k;
-    rep(i,50) {
-        rep(j, 50) {
-            string s;
-            cin >> s;
-            rep(k, s.size()) {
-                v[i][j] = s[k] - '0';
-            }
-        }
+    int n;
+    cin >> n;
+    int ans[26];
+    fill(ans, ans+26, 1e9);
+    while(n--) {
+        int a[26]{};
+        string s;
+        cin >> s;
+        for(auto&& c:s) a[c-'a']++;
+        for(int i=0; i<26; ++i) ans[i] = min(ans[i],a[i]);
     }
-
-    rep(x, 50) {
-        rep(y, 50) {
-            solve(x, y);
-        }
-    }
-
-    P(ans.size());
-    rep(i,ans.size()) {
-        rep(j,8) cout << i << " " << j << endl;
-    }
+    for(int i=0; i<26; ++i) cout << string(ans[i], char('a'+i));
+    cout << endl;
 
     return 0;
 }

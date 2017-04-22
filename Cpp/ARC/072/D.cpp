@@ -55,58 +55,37 @@ constexpr int INF = 100000000;
 
 #define int long long
 
-int N, M;
-
-int memo[1000001] = {0};
 
 signed main()
 {
-    cin >> N >> M;
-    vector<vector<int> > graph(N+1);
-    for(int i=0; i<M; ++i) {
-        int a, b;
-        cin >> a >> b;
-        graph[a].push_back(b);
-        graph[b].push_back(a);
-    }
-
-    int tmp = 1;
+    int x, y;
+    cin >> x >> y;
+    int t = 0;
     while(true) {
-        for(int i=0; i<N+1; ++i) memo[i] = 0;
-        vector<int> ans;
-        stack<int> st;
-        st.push(tmp);
-        while(true) {
-            if(st.empty()) break;
-            int n = st.top();
-            st.pop();
-            ans.push_back(n);
-            memo[n] = 1;
-            int f = 0;
-            for(int i=0; i<graph[n].size(); ++i) {
-                if(memo[graph[n][i]]==0) {
-                    f = 1;
-                    break;
-                }
-            }
-            if(f==0) break;
-            vector<int> node = graph[n];
-            for(int i=0; i<node.size(); ++i) {
-                if(memo[node[i]]==1) continue;
-                st.push(node[i]);
-            }
+        t = (t+1)%2;
+        if(x<=1&&y<=1) break;
+        if(x<2) {
+            int i = y/2;
+            y -= i * 2;
+            x += i;
         }
-        tmp++;
-        if(ans.size()<2) continue;
-        cout << ans.size() << endl;
-        for(int i=0; i<ans.size(); ++i) {
-            if(i==0) cout << ans[i];
-            else cout << " " << ans[i];
+        else if(y<2) {
+            int i = x/2;
+            x -= i * 2;
+            y += i;
         }
-        cout << endl;
-        break;
+        if(x<y) {
+            int i = x/2;
+            x -= i * 2;
+            y += i;
+        } else {
+            int i = y/2;
+            y -= i * 2;
+            x += i;
+        }
     }
-
+    if(t==0) cout << "Alice" << endl;
+    else cout << "Brown" << endl;
     return 0;
 }
 

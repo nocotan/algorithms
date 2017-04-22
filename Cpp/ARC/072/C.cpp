@@ -55,58 +55,63 @@ constexpr int INF = 100000000;
 
 #define int long long
 
-int N, M;
-
-int memo[1000001] = {0};
-
 signed main()
 {
-    cin >> N >> M;
-    vector<vector<int> > graph(N+1);
-    for(int i=0; i<M; ++i) {
-        int a, b;
-        cin >> a >> b;
-        graph[a].push_back(b);
-        graph[b].push_back(a);
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    for(int i=0; i<n; ++i) {
+        cin >> v[i];
     }
-
-    int tmp = 1;
-    while(true) {
-        for(int i=0; i<N+1; ++i) memo[i] = 0;
-        vector<int> ans;
-        stack<int> st;
-        st.push(tmp);
+    int ans = 0;
+    int sum = 0;
+    int f = -1;
+    sum = v[0];
+    if(v[0]==0) {
+        int i = 1;
         while(true) {
-            if(st.empty()) break;
-            int n = st.top();
-            st.pop();
-            ans.push_back(n);
-            memo[n] = 1;
-            int f = 0;
-            for(int i=0; i<graph[n].size(); ++i) {
-                if(memo[graph[n][i]]==0) {
-                    f = 1;
-                    break;
-                }
+            if(v[i]!=0) {
+                break;
             }
-            if(f==0) break;
-            vector<int> node = graph[n];
-            for(int i=0; i<node.size(); ++i) {
-                if(memo[node[i]]==1) continue;
-                st.push(node[i]);
-            }
+            i++;
         }
-        tmp++;
-        if(ans.size()<2) continue;
-        cout << ans.size() << endl;
-        for(int i=0; i<ans.size(); ++i) {
-            if(i==0) cout << ans[i];
-            else cout << " " << ans[i];
-        }
-        cout << endl;
-        break;
+        ans += 1 + (i-1)*2;
+        cout << ans << endl;
+        if(v[i]>0) sum = v[i] - 1;
+        else sum = v[i] + 1;
     }
-
+    if(sum>0) f = 1;
+    else f = 0;
+    for(int i=1; i<v.size(); ++i) {
+        int tmp_sum = sum + v[i];
+        if(f==0&&tmp_sum<0) {
+            ans += abs(tmp_sum)+1;
+            sum = 1;
+            f = 1;
+        }
+        else if(f==1&&tmp_sum>0) {
+            ans += abs(tmp_sum)+1;
+            sum = -1;
+            f = 0;
+        }
+        else if(tmp_sum==0) {
+            if(f==1) {
+                ans++;
+                sum = -1;
+                f = 0;
+            }
+            else {
+                ans++;
+                sum = 1;
+                f = 1;
+            }
+        }else {
+            sum = tmp_sum;
+            if(tmp_sum < 0) f = 0;
+            else f = 1;
+        }
+    }
+    cout << ans << endl;
     return 0;
 }
 

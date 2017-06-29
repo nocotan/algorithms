@@ -1,46 +1,66 @@
-//#define _GRIBCXX_DEBUG
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <iostream>
+#include <vector>
 using namespace std;
-
 #define int long long
 
-signed main()
-{
-    int h, w;
-    cin >> h >> w;
-    if(h%3==0||w%3==0) {
+auto main() -> signed {
+    int H, W;
+    cin >> H >> W;
+    if(H%3==0||W%3==0) {
         cout << 0 << endl;
         return 0;
     }
-    // 縦
-    int d = 3;
-    int w1 = w;
-    int h1 = h;
-    vector<int> ans1;
-    for(int i=0; i<2; ++i) {
-        int min_s = 1e+9;
-        int memo_j = 0;
-        int tmp = 0;
-        for(int j=1; j<=w1; ++j) {
-            int s = j * h1;
-            if(s>h1*w1/3) {
-                if(min_s > abs(h1*w1/d-s)) {
-                    min_s = abs(h1*w1/d-s);
-                    memo_j = j;
-                    tmp = s;
-                }
-                break;
-            }
-            min_s = h1*w1/d - s;
-            memo_j = j;
-            tmp = s;
-        }
-        d--;
-        w1 -= memo_j;
-        ans1.push_back(tmp);
-    }
-    ans1.push_back(h1*w1);
-    for(int i=0; i<3; ++i) cout << ans1[i] << endl;
-    return 0;
-}
 
+    int ans = 1e+9;
+    for(int h=1; h<H; ++h) {
+        int a = h*W;
+        int bw = W/2;
+        int b = bw*(H-h);
+        int c = (W-bw)*(H-h);
+        vector<int> v;
+        v.push_back(a);
+        v.push_back(b);
+        v.push_back(c);
+        sort(v.begin(), v.end());
+        ans = min(ans, v[2]-v[0]);
+
+        if(H-h>=2) {
+            int bh = (H-h)/2;
+            b = bh*W;
+            c = (H-h-bh)*W;
+            v.clear();
+            v.push_back(a);
+            v.push_back(b);
+            v.push_back(c);
+            sort(v.begin(), v.end());
+            ans = min(ans, v[2]-v[0]);
+        }
+    }
+
+    for(int w=1; w<W; ++w) {
+        int a = w*H;
+        int bh = H/2;
+        int b = bh*(W-w);
+        int c = (W-w)*(H-bh);
+        vector<int> v;
+        v.push_back(a);
+        v.push_back(b);
+        v.push_back(c);
+        sort(v.begin(), v.end());
+        ans = min(ans, v[2]-v[0]);
+
+        if(W-w>=2) {
+            int bw = (W-w)/2;
+            b = bw*H;
+            c = (W-w-bw)*H;
+            v.clear();
+            v.push_back(a);
+            v.push_back(b);
+            v.push_back(c);
+            sort(v.begin(), v.end());
+            ans = min(ans, v[2]-v[0]);
+        }
+    }
+    cout << ans << endl;
+}

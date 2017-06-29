@@ -1,117 +1,63 @@
-//#define _GRIBCXX_DEBUG
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
-
-// 基本テンプレート
-#pragma region MACRO
-#define P(x) cout << (x) << endl
-#define p(x) cout << (x)
-#define PED cout << "\n"
-#define rep(i,n) for(int i=0; i<(int)n; ++i)
-#define REP(i,x,n) for(int i=x; i<(int)n; ++i)
-#define repi(i,n) for(int i=0; i<=(int)n; ++i)
-#define REPI(i,x,n) for(int i=x; i<=(int)n; ++i)
-#define ILP while(true)
-#define FOR(i,c) for(__typeof((c).begin())!=(c).begin(); i!=(c).end(); ++i)
-#define ALL(c) (c).begin(), (c).end()
-#define mp make_pair
-#pragma endregion
-
-// 型
-#pragma region TYPE_DEF
-typedef long long ll;
-typedef pair<int, int> pii;
-typedef pair<string, string> pss;
-typedef pair<string, int> psi;
-typedef pair<int, string> pis;
-typedef vector<int> vi;
-typedef vector<double> vd;
-typedef vector<long double> vld;
-typedef vector<long> vl;
-typedef vector<long long> vll;
-typedef vector<string> vs;
-#pragma endregion
-
-// Effective std
-#pragma region ESTD
-template<typename C, typename T> int count(C& c, T t) { return count(ALL(c), t); }
-template<typename C, typename F> int count_if(C& c, F f) { return count_if(ALL(c), f); }
-template<typename C, typename T> void erase(C& c, T t) { remove(ALL(c), t), c.end(); }
-template<typename C> void remove(vector<C>& c, unsigned int index) { c.erase(c.begin()+index); }
-template<typename C, typename T, typename U> void replace(C& c, T t, U u) { replace(ALL(c), t, u); }
-template<typename C, typename F, typename U> void replace_if(C& c, F f, U u) { (ALL(c), f, u); }
-template<typename C> void reverse(C& c) { reverse(ALL(c)); }
-template<typename C> void sort(C& c) { sort(ALL(c)); }
-template<typename C, typename Pred> void sort(C& c, Pred p) { sort(ALL(c), p); }
-#pragma endregion
-
-// 定数
-#pragma region CONST_VAL
-constexpr int PI = (2*acos(0.0));
-constexpr int EPS = (1e-9);
-constexpr int MOD = (int)(1e9+7);
-constexpr int INF = 100000000;
-#pragma endregion
-
 #define int long long
 
-signed main()
-{
+auto main() -> signed {
     int n;
     cin >> n;
     vector<int> v(n);
-    for(int i=0; i<n; ++i) {
-        cin >> v[i];
-    }
-    int ans = 0;
-    int sum = 0;
-    int f = -1;
-    sum = v[0];
-    if(v[0]==0) {
-        int i = 1;
-        while(true) {
-            if(v[i]!=0) {
-                break;
-            }
-            i++;
-        }
-        ans += 1 + (i-1)*2;
-        cout << ans << endl;
-        if(v[i]>0) sum = v[i] - 1;
-        else sum = v[i] + 1;
-    }
-    if(sum>0) f = 1;
-    else f = 0;
-    for(int i=1; i<v.size(); ++i) {
-        int tmp_sum = sum + v[i];
-        if(f==0&&tmp_sum<0) {
-            ans += abs(tmp_sum)+1;
-            sum = 1;
-            f = 1;
-        }
-        else if(f==1&&tmp_sum>0) {
-            ans += abs(tmp_sum)+1;
-            sum = -1;
-            f = 0;
-        }
-        else if(tmp_sum==0) {
-            if(f==1) {
-                ans++;
-                sum = -1;
-                f = 0;
-            }
-            else {
-                ans++;
-                sum = 1;
-                f = 1;
-            }
-        }else {
-            sum = tmp_sum;
-            if(tmp_sum < 0) f = 0;
-            else f = 1;
-        }
-    }
-    cout << ans << endl;
-    return 0;
-}
+    for(int i=0; i<n; ++i) cin >> v[i];
 
+
+    int ans1 = 0;
+    /**
+     * 0 => +
+     * 1 => -
+     */
+    int f = 0;
+    int t = 0;
+    t = v[0];
+    if(t<=0) {
+        ans1 += abs(t-1);
+        t = 1;
+    }
+    for(int i=1; i<v.size(); ++i) {
+        if(f==0 && t+v[i]>=0) {
+            ans1 += abs(t+v[i])+1;
+            t = -1;
+        }
+        else if(f==1 && t+v[i]<=0) {
+            ans1 += abs(t+v[i])+1;
+            t = 1;
+        }
+        else t += v[i];
+        f = (f+1)%2;
+    }
+
+    int ans2 = 0;
+    /**
+     * 0 => +
+     * 1 => -
+     */
+    f = 1;
+    t = 0;
+    t = v[0];
+    if(t>=0) {
+        ans2 += t+1;
+        t = -1;
+    }
+    for(int i=1; i<v.size(); ++i) {
+        if(f==0 && t+v[i]>=0) {
+            ans2 += abs(t+v[i])+1;
+            t = -1;
+        }
+        else if(f==1 && t+v[i]<=0) {
+            ans2 += abs(t+v[i])+1;
+            t = 1;
+        }
+        else t += v[i];
+        f = (f+1)%2;
+    }
+    cout << min(ans1, ans2) << endl;
+}

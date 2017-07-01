@@ -4,25 +4,33 @@ using namespace std;
 
 #define int long long
 
-auto main() -> signed {
-    int n, a, b;
-    cin >> n >> a >> b;
-    vector<int> v(n);
-    for(int i=0; i<n; ++i) cin >> v[i];
-    sort(v.begin(), v.end());
-    vector<int> u;
-    for(int i=0; i<v.size(); ++i) {
-        int tmp = 0;
-        for(int j=i; j<v.size(); ++j) {
-            if(v[i]==v[j]) tmp += v[i];
+int h[100001];
+int n, a, b;
+
+auto check(int k) -> bool {
+    int res = 0;
+    for(int i=0; i<n; ++i) {
+        if(b*k<h[i]) {
+            if((h[i]-k*b)%(a-b)==0) res += (h[i]-k*b)/(a-b);
+            else res += (h[i]-k*b)/(a-b)+1;
         }
-        u.push_back(tmp);
     }
-    int ans = 0;
-    for(int i=0; i<u.size(); ++i) {
-        ans += u[i] / (a+b);
+    return res <= k;
+}
+
+auto main() -> signed {
+    cin >> n >> a >> b;
+    for(int i=0; i<n; ++i) cin >> h[i];
+    int lo=0;
+    int hi = 1e+9;
+    int mid;
+    while(lo<hi) {
+        mid = (lo+hi)/2;
+        if(check(mid)) {
+            hi = mid;
+        } else lo = mid+1;
     }
-    cout << ans << endl;
+    cout << hi << endl;
     return 0;
 }
 

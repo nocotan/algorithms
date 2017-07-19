@@ -1,30 +1,43 @@
-//#define _GRIBCXX_DEBUG
-#include <bits/stdc++.h>
+#include <iostream>
+#include <map>
 using namespace std;
-
 #define int long long
 
-int field[100001][100001];
-int row[100001];
-int col[100001];
+int rs[1024*1024];
+int cs[1024*1024];
+int rc[1024*1024];
+int cc[1024*1024];
 
 auto main() -> signed {
-    int r, c, k;
-    cin >> r >> c >> k;
-    int n;
-    cin >> n;
+    int r, c, k, n;
+    cin >> r >> c >> k >> n;
     for(int i=0; i<n; ++i) {
-        int r1, c1;
-        cin >> r1 >> c1;
-        field[r][c]++;
-        row[r]++;
-        col[c]++;
+        cin >> rs[i] >> cs[i];
+        rc[rs[i]]++;
+        cc[cs[i]]++;
+    }
+
+    map<int, int> num_r;
+    map<int, int> num_c;
+
+    for(int i=0; i<r; ++i) {
+        num_r[rc[i+1]]++;
+    }
+    for(int i=0; i<c; ++i) {
+        num_c[cc[i+1]]++;
     }
 
     int ans = 0;
-    for(int i=0; i<max(r, c); ++i) {
-        if(row[r]+col[c]==k) ans++;
+    for(int i=0; i<k+1; ++i) {
+        ans += num_r[i] * num_c[k-i];
     }
-    return 0;
-}
 
+    for(int i=0; i<n; ++i) {
+        int a = rs[i];
+        int b = cs[i];
+
+        if(rc[a]+cc[b]==k) ans--;
+        if(rc[a]+cc[b]==k+1) ans++;
+    }
+    cout << ans << endl;
+}

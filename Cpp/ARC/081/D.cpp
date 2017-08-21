@@ -3,12 +3,6 @@
 using namespace std;
 
 #define int long long
-
-vector<string> G;
-
-int dx[]{0, 1, 0, -1};
-int dy[]{1, 0, -1, 0};
-
 int graph[52][52];
 
 int mod = 1000000007;
@@ -21,8 +15,6 @@ signed main() {
         cout << 3 << endl;
         return 0;
     }
-    G.push_back(s1);
-    G.push_back(s2);
 
     int cnt = 0;
     int ans = 6;

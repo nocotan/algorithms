@@ -4,30 +4,17 @@ using namespace std;
 
 #define int long long
 
-auto solve(vector<int> v, int p, int a, int b) -> int {
-    int res = 0;
-    if(p==0) {
-        for(int i=1; i<=a; ++i) {
-            res += i
-        }
-    }
-}
-
-auto main() -> signed {
+signed main() {
     int n, p;
     cin >> n >> p;
-    vector<int> v(n);
-    for(int i=0; i<n; ++i) cin >> v[i];
-    sort(v.begin(), v.end());
-
-    int a = 0;
-    int b = 0;
-    for(int i=0; i<v.size(); ++i) {
-        if(v[i]%2==0) a++;
-        else b++;
+    int cnt[2] = {0};
+    for(int i=0; i<n; ++i) {
+        int a;
+        cin >> a;
+        cnt[a%2]++;
     }
-    if(p==1) {
-    }
+    if(cnt[1]) cout << (1ll<<(n-1)) << endl;
+    else cout << (p?0:1ll<<n) << endl;
     return 0;
 }
 

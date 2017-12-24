@@ -1,124 +1,121 @@
-//#define _GRIBCXX_DEBUG
 #include <bits/stdc++.h>
 using namespace std;
 
-// 基本テンプレート
-#pragma region MACRO
-#define P(x) cout << (x) << endl
-#define p(x) cout << (x)
-#define PED cout << "\n"
-#define rep(i,n) for(int i=0; i<(int)n; ++i)
-#define REP(i,x,n) for(int i=x; i<(int)n; ++i)
-#define repi(i,n) for(int i=0; i<=(int)n; ++i)
-#define REPI(i,x,n) for(int i=x; i<=(int)n; ++i)
-#define ILP while(true)
-#define FOR(i,c) for(__typeof((c).begin())!=(c).begin(); i!=(c).end(); ++i)
-#define ALL(c) (c).begin(), (c).end()
-#define mp make_pair
-#pragma endregion
+#define int long long
 
-// 型
-#pragma region TYPE_DEF
-typedef long long ll;
-typedef pair<int, int> pii;
-typedef pair<string, string> pss;
-typedef pair<string, int> psi;
-typedef pair<int, string> pis;
-typedef vector<int> vi;
-typedef vector<double> vd;
-typedef vector<long double> vld;
-typedef vector<long> vl;
-typedef vector<long long> vll;
-typedef vector<string> vs;
-#pragma endregion
+vector<int> G[200001];
+vector<int> rG[200001];
+vector<int> vs;
+bool used[200001];
+int cmp[200001];
 
-// Effective std
-#pragma region ESTD
-template<typename C, typename T> int count(C& c, T t) { return count(ALL(c), t); }
-template<typename C, typename F> int count_if(C& c, F f) { return count_if(ALL(c), f); }
-template<typename C, typename T> void erase(C& c, T t) { remove(ALL(c), t), c.end(); }
-template<typename C> void remove(vector<C>& c, unsigned int index) { c.erase(c.begin()+index); }
-template<typename C, typename T, typename U> void replace(C& c, T t, U u) { replace(ALL(c), t, u); }
-template<typename C, typename F, typename U> void replace_if(C& c, F f, U u) { (ALL(c), f, u); }
-template<typename C> void reverse(C& c) { reverse(ALL(c)); }
-template<typename C> void sort(C& c) { sort(ALL(c)); }
-template<typename C, typename Pred> void sort(C& c, Pred p) { sort(ALL(c), p); }
-#pragma endregion
+class SCC {
+    private:
+        int V;
+        int E;
 
-// 定数
-#pragma region CONST_VAL
-constexpr int PI = (2*acos(0.0));
-constexpr int EPS = (1e-9);
-constexpr int MOD = (int)(1e9+7);
-constexpr int INF = 100000000;
-#pragma endregion
+        auto dfs(int v) -> void {
+            used[v] = true;
+            for (int i = 0; i < G[v].size(); ++i)
+                if (!used[G[v][i]])
+                    dfs(G[v][i]);
 
-struct UnionFind {
-  vector<int> data;
-  UnionFind(int size) : data(size, -1) { }
-  bool unionSet(int x, int y) {
-    x = root(x); y = root(y);
-    if (x != y) {
-      if (data[y] < data[x]) swap(x, y);
-      data[x] += data[y]; data[y] = x;
-    }
-    return x != y;
-  }
-  bool findSet(int x, int y) {
-    return root(x) == root(y);
-  }
-  int root(int x) {
-    return data[x] < 0 ? x : data[x] = root(data[x]);
-  }
-  int size(int x) {
-    return -data[root(x)];
-  }
+            vs.push_back(v);
+        }
+
+        auto rdfs(int v, int k) -> void{
+            used[v] = true;
+            cmp[v] = k;
+            for (int i = 0; i < rG[v].size(); i++)
+                if (!used[rG[v][i]])
+                    rdfs(rG[v][i], k);
+        }
+
+    public:
+        SCC(int V, int E)
+            : V(V), E(E) { }
+
+        auto scc() -> int {
+            fill(used, used + V, false);
+            vs.clear();
+
+            for (int v = 0; v < V; v++) {
+                if (!used[v]) dfs(v);
+            }
+
+            fill(used, used + V, false);
+            int k = 0;
+
+            for (int i = vs.size() - 1; i >= 0; i--)
+                if (!used[vs[i]])
+                    rdfs(vs[i], k++);
+
+            return k;
+        }
+
+        auto add_edge(int s, int t) {
+            G[s].push_back(t);
+            rG[t].push_back(s);
+        }
+
+        auto get_cmp(int a) -> int {
+            return cmp[a];
+        }
+
+        auto is_union_cmp(int a, int b) -> bool {
+            return cmp[a] == cmp[b];
+        }
 };
 
-int main()
-{
-    int N, K, L;
-    cin >> N >> K >> L;
+int g[200001][200001];
 
-    UnionFind uk(K);
-    UnionFind ul(L);
+signed main() {
+    int n, k, l;
+    cin >> n >> k >> l;
+    set<pair<int, int>> st;
 
-    REPI(i,1,K) {
+    for(int i=0; i<k; ++i) {
         int p, q;
         cin >> p >> q;
-        uk.unionSet(p,q);
+        --p;--q;
+        g[p][q]++;
+        g[q][p]++;
+        st.insert(make_pair(max(p, q), min(p, q)));
     }
-    REPI(i,1,L) {
-        int p, q;
-        cin >> p >> q;
-        ul.unionSet(p,q);
+    for(int i=0; i<l; ++i) {
+        int r, s;
+        --r;--s;
+        cin >> r >> s;
+        g[r][s]++;
+        g[s][r]++;
+        st.insert(make_pair(max(s, r), min(s, r)));
     }
 
-    int f = 0;
-    int memo[1000000] = {1};
-    REPI(i,1,N) {
-        f = i;
-        REPI(j,i+1,N) {
-            if(uk.findSet(i,j)&&ul.findSet(i,j)&&(f+1==j||f-1==j)) {
-                memo[i]++;
-                f = j;
-            }
-        }
-        f = i;
-        for(int j=1;j<i; ++j) {
-            if(uk.findSet(i,j)&&ul.findSet(i,j)&&(f+1==j||f-1==j)) {
-                memo[i]++;
-                f = j;
-            }
+    int E = 0;
+    for(auto iter=st.begin(); iter!=st.end(); ++iter) {
+        if(g[iter->first][iter->second]==2) {
+            ++E;
         }
     }
 
-    rep(i,N) {
-        if(i==0) cout << memo[i];
-        else cout << " " << memo[i];
+    SCC scc(n, E);
+    for(auto iter=st.begin(); iter!=st.end(); ++iter) {
+        if(g[iter->first][iter->second]==2) {
+            scc.add_edge(iter->first, iter->second);
+            scc.add_edge(iter->second, iter->first);
+            ++E;
+        }
     }
-    cout << endl;
 
+    int K = scc.scc();
+    std::map<int, int> mp;
+    for(int i=0; i<n; ++i) {
+        mp[scc.get_cmp(i)]++;
+    }
+
+    for(int i=0; i<n; ++i) {
+        cout << mp[scc.get_cmp(i)] << endl;
+    }
     return 0;
 }
 

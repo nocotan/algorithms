@@ -10,7 +10,7 @@ class Solution {
         int ans = 0;
         for (int i=s.size()-1; i>=0; --i) {
             if (s[i] == ' ' && ans > 0) break;
-            if (s[i] != ' ') ++ans;
+            else if (s[i] != ' ') ++ans;
         }
 
         return ans;
